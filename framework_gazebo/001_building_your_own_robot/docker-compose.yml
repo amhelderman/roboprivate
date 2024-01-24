@@ -1,0 +1,103 @@
+# Runs a turtlebot simulation
+services:
+
+  mygazebo:
+    build: .
+    network_mode: host
+    image: robo-sim-rviz
+    # For passing GUI through to windows:
+    volumes:
+      - /dev/shm:/dev/shm
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+    environment:
+      - ROS_DOMAIN_ID=30
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
+  
+  # show-gazebo-topics:
+  #   build: .
+  #   image: robo-sim-rviz
+  #   network_mode: host
+  #   # volumes:
+  #   #   - /dev/shm:/dev/shm
+  #   environment:
+  #     - ROS_DOMAIN_ID=30
+  #   command: /bin/bash -c "ign topic -l && sleep infinity"
+  
+  # bridge-twist-from-ros:
+  #   build: .
+  #   image: robo-sim-rviz
+  #   network_mode: host
+  #   # volumes:
+  #   #   - /dev/shm:/dev/shm
+  #   environment:
+  #     - ROS_DOMAIN_ID=30
+  #   command: /bin/bash -c "source /opt/ros/humble/setup.bash && ros2 run  ros_gz_bridge parameter_bridge /model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist --ros-args --remap __node:=bridge_twist"
+ 
+  bridge-lidar-to-ros:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && ros2 run ros_gz_bridge parameter_bridge /lidar2@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan --ros-args --remap __node:=bridge_scan -r /lidar2:=/laser_scan"
+  
+  myrviz:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    # command: /bin/bash -c "source /opt/ros/humble/setup.bash && rviz2"
+    # command: /bin/bash -c "source /opt/ros/humble/setup.bash && rqt_graph"
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && rqt"
+    # command: /bin/bash -c "source /opt/ros/humble/setup.bash && ros2 topic echo /chatter"
+    # For passing GUI through to windows:
+    volumes:
+      - /dev/shm:/dev/shm
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+    environment:
+      - ROS_DOMAIN_ID=30
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
+      
+  teleop:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - ${PWD}/ros_scripts/push.sh:/push.sh
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /push.sh"
+      
+  talker:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - ${PWD}/ros_scripts/talk.sh:/talk.sh
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    # command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /talk.sh"
+      
+  listener:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - ${PWD}/ros_scripts/listen.sh:/listen.sh
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    # command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /listen.sh"
