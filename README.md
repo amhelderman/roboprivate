@@ -2,11 +2,12 @@
 
 This is all experimental - no warranty.
 
-I use this on an Ubuntu 23.10 system but any recent Ubuntu should work.
+# Prerequisites:
+* A modern ubuntu system
+* Docker
+* Docker Compose v2
 
-The examples use X11 forwarding which is the most restrictive part - otherwise, docker takes care of the rest.
-
-# How to Install:
+# How to Install Docker and Docker Compose:
 ```
 sudo apt install -y docker.io 
 sudo usermod -aG docker $USER 
