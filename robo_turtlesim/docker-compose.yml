@@ -1,0 +1,24 @@
+# Runs a turtlebot simulation
+services:
+  turtlesimgui:
+    # "Build the dockerfile in this directory and call it this name"
+    build: ./robo_turtlesim/
+    image: robo-turtlesim
+    # For passing GUI through to windows:
+    volumes:
+      # Works for WSL2 ubuntu systems (and probably docker-desktop)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
+  teleop:
+    image: robo-turtlesim
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    # "ros2", "run", "turtlesim", "turtle_teleop_key"
+    command: ros2 run turtlesim turtle_teleop_key

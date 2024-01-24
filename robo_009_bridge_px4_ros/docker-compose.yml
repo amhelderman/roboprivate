@@ -1,0 +1,35 @@
+services:
+
+  roscontroller:
+    # build: 
+    #   context: ./ros_px4
+    #   dockerfile: Dockerfile
+    image: ros-px4
+    network_mode: host
+    ipc: host
+    volumes:
+      - ${PWD}/ros_scripts/:/ros_px4/ros_scripts/
+    # command: /bin/bash -c "/ros_scripts/009.sh"
+
+  gazebo-and-px4:
+    # build: 
+    #   context: ./robo_008_px4_qgroundcontrol
+    #   dockerfile: Dockerfile
+    image: robo-008-px4-gazebo
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${PWD}/ros_scripts/:/ros_scripts/
+      # Works for WSL2 ubuntu systems (and probably docker-desktop)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    command: /bin/bash -c "/ros_scripts/008.sh"
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER

@@ -1,0 +1,28 @@
+services:
+
+  roscontroller:
+    # build: .
+    image: ros-px4
+    network_mode: host
+    ipc: host
+
+  jmavsim-and-px4:
+    build: .
+    image: robo-010-px4-jmavsim
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${PWD}/ros_scripts/:/ros_scripts/
+      # Works for WSL2 ubuntu systems (and probably docker-desktop)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    command: /bin/bash -c "/ros_scripts/010.sh"
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER

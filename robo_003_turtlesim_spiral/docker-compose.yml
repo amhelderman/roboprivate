@@ -1,0 +1,32 @@
+# Runs a turtlebot simulation
+services:
+  gui:
+    build:
+      context: ./robo_turtlesim
+      dockerfile: Dockerfile
+    image: robo_turtlesim 
+    network_mode: host
+    ipc: host
+    # For passing GUI through to windows:
+    volumes:
+      # Works for WSL2 ubuntu systems (and probably docker-desktop)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
+
+  push:
+    build:
+      context: ./robo_turtlesim
+      dockerfile: Dockerfile
+    image: robo_turtlesim 
+    network_mode: host
+    ipc: host
+    volumes:
+      - ${PWD}/ros_scripts/pub_spiral.py:/pub_spiral.py
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /pub_spiral.py"

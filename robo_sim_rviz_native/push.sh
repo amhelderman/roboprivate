@@ -1,0 +1,1 @@
+ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/Twist "linear: { x: 5.0 }"

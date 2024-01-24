@@ -1,0 +1,19 @@
+services:
+  robonav2reference:
+    build: . 
+    image: robo-007-nav2-reference
+    network_mode: host
+    ipc: host
+    volumes:
+      - ${PWD}/ros_scripts/:/ros_scripts/
+      # Works for WSL2 ubuntu systems (and probably docker-desktop)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    command: /bin/bash -c "/ros_scripts/nav2.sh"
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER

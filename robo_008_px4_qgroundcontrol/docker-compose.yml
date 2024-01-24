@@ -1,0 +1,37 @@
+services:
+
+  gazebo-and-px4:
+    build: .
+    image: robo-008-px4-gazebo
+    network_mode: host
+    ipc: host
+    volumes:
+      - ${PWD}/ros_scripts/:/ros_scripts/
+      # - ${PWD}/PX4-Autopilot/:/PX4-Autopilot/
+      # Works for WSL2 ubuntu systems (and probably docker-desktop)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    command: /bin/bash -c "/ros_scripts/008.sh"
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
+
+
+  
+  myqgroundcontrol:
+    build:
+      context: ./framework_qgroundcontrol
+      dockerfile: Dockerfile
+    image: qgroundcontrol
+    network_mode: host
+    privileged: true
+    ipc: host
+    volumes:
+      - /dev/shm:/dev/shm
+      - $XAUTHORITY:/home/qgroundcontroluser/.Xauthority  
+    environment:
+      - DISPLAY

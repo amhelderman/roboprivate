@@ -1,0 +1,14 @@
+# Just opens a qgroudncontrol container
+services:
+
+  myqgroundcontrol:
+    build: .
+    network_mode: host
+    privileged: true
+    ipc: host
+    image: qgroundcontrol
+    volumes:
+      - /dev/shm:/dev/shm
+      - $XAUTHORITY:/home/qgroundcontroluser/.Xauthority  
+    environment:
+      - DISPLAY
