@@ -1,3 +1,5 @@
+# Runs a gazebo simulation with ROS2 and rviz2
+# CURRENTLY DOWN - something broke when organizing this project into this repo.
 services:
 
   mygazebo:
