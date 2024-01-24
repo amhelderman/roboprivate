@@ -1,0 +1,25 @@
+services:
+
+  talker:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - ${PWD}/ros_scripts/talk.sh:/talk.sh
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    # command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /talk.sh"
+      
+  listener:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - ${PWD}/ros_scripts/listen.sh:/listen.sh
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    # command: /bin/bash -c "sleep infinity"
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /listen.sh"

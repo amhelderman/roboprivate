@@ -1,4 +1,3 @@
-# Runs a turtlebot simulation
 services:
 
   mygazebo:
@@ -17,25 +16,25 @@ services:
       - XDG_RUNTIME_DIR
       - PULSE_SERVER
   
-  # show-gazebo-topics:
-  #   build: .
-  #   image: robo-sim-rviz
-  #   network_mode: host
-  #   # volumes:
-  #   #   - /dev/shm:/dev/shm
-  #   environment:
-  #     - ROS_DOMAIN_ID=30
-  #   command: /bin/bash -c "ign topic -l && sleep infinity"
+  show-gazebo-topics:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    command: /bin/bash -c "ign topic -l && sleep infinity"
   
-  # bridge-twist-from-ros:
-  #   build: .
-  #   image: robo-sim-rviz
-  #   network_mode: host
-  #   # volumes:
-  #   #   - /dev/shm:/dev/shm
-  #   environment:
-  #     - ROS_DOMAIN_ID=30
-  #   command: /bin/bash -c "source /opt/ros/humble/setup.bash && ros2 run  ros_gz_bridge parameter_bridge /model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist --ros-args --remap __node:=bridge_twist"
+  bridge-twist-from-ros:
+    build: .
+    image: robo-sim-rviz
+    network_mode: host
+    volumes:
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=30
+    command: /bin/bash -c "source /opt/ros/humble/setup.bash && ros2 run  ros_gz_bridge parameter_bridge /model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist --ros-args --remap __node:=bridge_twist"
  
   bridge-lidar-to-ros:
     build: .
@@ -54,7 +53,6 @@ services:
     # command: /bin/bash -c "source /opt/ros/humble/setup.bash && rviz2"
     # command: /bin/bash -c "source /opt/ros/humble/setup.bash && rqt_graph"
     command: /bin/bash -c "source /opt/ros/humble/setup.bash && rqt"
-    # command: /bin/bash -c "source /opt/ros/humble/setup.bash && ros2 topic echo /chatter"
     # For passing GUI through to windows:
     volumes:
       - /dev/shm:/dev/shm
@@ -77,27 +75,4 @@ services:
     environment:
       - ROS_DOMAIN_ID=30
     command: /bin/bash -c "source /opt/ros/humble/setup.bash && /push.sh"
-      
-  talker:
-    build: .
-    image: robo-sim-rviz
-    network_mode: host
-    volumes:
-      - ${PWD}/ros_scripts/talk.sh:/talk.sh
-      - /dev/shm:/dev/shm
-    environment:
-      - ROS_DOMAIN_ID=30
-    # command: /bin/bash -c "sleep infinity"
-    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /talk.sh"
-      
-  listener:
-    build: .
-    image: robo-sim-rviz
-    network_mode: host
-    volumes:
-      - ${PWD}/ros_scripts/listen.sh:/listen.sh
-      - /dev/shm:/dev/shm
-    environment:
-      - ROS_DOMAIN_ID=30
-    # command: /bin/bash -c "sleep infinity"
-    command: /bin/bash -c "source /opt/ros/humble/setup.bash && /listen.sh"
+    
