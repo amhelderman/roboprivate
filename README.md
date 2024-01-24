@@ -1,6 +1,12 @@
 # Robo - A collection of robotics demos set up to run automatically using docker compose.
 
-# Install on a modern Ubuntu system:
+This is all experimental - no warranty.
+
+I use this on an Ubuntu 23.10 system but any recent Ubuntu should work.
+
+The examples use X11 forwarding which is the most restrictive part - otherwise, docker takes care of the rest.
+
+# How to Install:
 ```
 sudo apt install -y docker.io 
 sudo usermod -aG docker $USER 
@@ -17,5 +23,5 @@ sudo chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 docker compose version
 ```
 
-# Run:
+# How to Run:
 Go into a subdirectory and follow the README.md instructions.
