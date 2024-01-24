@@ -2,6 +2,8 @@
 
 This is all experimental - no warranty.
 
+**This is still a work in progress. THe later examples might need a bit more organization before they work (because I just pulled this from my other personal repo).**
+
 # Prerequisites:
 * A modern ubuntu system
 * Docker
