@@ -1,4 +1,4 @@
-# Runs a turtlebot simulation
+# See README.md for purpose.
 services:
   mygazebo:
     build: .

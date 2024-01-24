@@ -1,8 +1,5 @@
-# Robo
+# Robo 001 - runs a turtlesim 
 
 ```
-alias dc='docker compose -f 001.yml '
-dc build 
-dc up  -d  --remove-orphans 
-# dc down
+docker compose up
 ```
