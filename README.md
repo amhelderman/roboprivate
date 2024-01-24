@@ -25,3 +25,5 @@ docker compose version
 
 # How to Run:
 Go into a subdirectory and follow the README.md instructions.
+
+***I recommend you try robo_003_turtlesim_spiral first.***
