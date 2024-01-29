@@ -1,8 +1,4 @@
-# Robo
-
+# Opens a turtlesim viewer along with necessary controllers that direct the turtle to move around in spirally patterns.
 ```
-alias dc='docker compose -f 001.yml '
-dc build 
-dc up  -d  --remove-orphans 
-# dc down
+docker compose up 
 ```
