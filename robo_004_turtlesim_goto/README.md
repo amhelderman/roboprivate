@@ -1,8 +1,4 @@
-# Robo
-
+# Run a demo where a turtlesim navigates to random points.
 ```
-alias dc='docker compose -f 001.yml '
-dc build 
-dc up  -d  --remove-orphans 
-# dc down
+docker compose up 
 ```
