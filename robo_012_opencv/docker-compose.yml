@@ -1,0 +1,21 @@
+services:
+
+  opencvtest:
+    build: .
+    image: robo-012-opencvtest
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    stop_grace_period: 1s  # SIGKILL after 1s
+    volumes:
+      # read only so that the permissions dont change on host unnecessarily.
+      - ${PWD}:/pwd/:ro
+      # X11 forwarding for linux 
+      - $XAUTHORITY:/root/.Xauthority
+    command: /bin/bash -c "python3  /pwd/opencv001.py"
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
