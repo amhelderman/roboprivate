@@ -1,3 +1,0 @@
-/home/alex/work/masterplan/study/cpp_opencv_002/build/CMakeFiles/example.dir
-/home/alex/work/masterplan/study/cpp_opencv_002/build/CMakeFiles/edit_cache.dir
-/home/alex/work/masterplan/study/cpp_opencv_002/build/CMakeFiles/rebuild_cache.dir
