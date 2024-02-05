@@ -3,6 +3,8 @@
 #include <opencv2/imgproc.hpp>
 #include <iostream>
 #include <stdexcept>
+#include <chrono>
+#include <thread>
 
 using namespace cv;
 
@@ -60,6 +62,17 @@ int main()
 
      VideoCapture cap = setupVideo();
 
+     double fps = cap.get(CAP_PROP_FPS);
+
+     if (fps == 0.0) {
+          throw std::invalid_argument("Cannot get fps");
+     }
+
+     double period_milliseconds = 100.0 / fps;
+
+     std::cout << "fps: " << fps << std::endl;
+     std::cout << "period_milliseconds: " << period_milliseconds << std::endl;
+
      while (true) {
           Mat frame;
           
@@ -74,7 +87,10 @@ int main()
                std::cout << "Esc key is pressed by user. Stopping the video" << std::endl;
                break;
           }
-          
+
+          using namespace std::chrono_literals;
+
+          std::this_thread::sleep_for(20ms);
      }
      return 0;
 }
