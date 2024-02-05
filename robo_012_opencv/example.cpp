@@ -5,9 +5,9 @@
 #include <stdexcept>
 #include <chrono>
 #include <thread>
+#include <csignal>
 
 using namespace cv;
-
 
 VideoCapture setupVideo() {
       //open the video file for reading
@@ -56,8 +56,8 @@ Mat frameWithCircle() {
 int main()
 {
 
-
      imshow("Display window", frameWithCircle());
+
      setMouseCallback("Display window", CallBackFunc, NULL);
 
      VideoCapture cap = setupVideo();
@@ -68,13 +68,19 @@ int main()
           throw std::invalid_argument("Cannot get fps");
      }
 
-     double period_milliseconds = 100.0 / fps;
+     using namespace std::chrono_literals;
+
+
+     double period_milliseconds = 1000.0 / fps;
 
      std::cout << "fps: " << fps << std::endl;
      std::cout << "period_milliseconds: " << period_milliseconds << std::endl;
 
-     while (true) {
+     while (!is_interrupted) {
           Mat frame;
+
+          // Get time now.
+          auto start = std::chrono::high_resolution_clock::now();
           
           if (!cap.read(frame)) {
                std::cout << "End of video" << std::endl;
@@ -88,9 +94,18 @@ int main()
                break;
           }
 
-          using namespace std::chrono_literals;
+          // Get time we've spent loading frame in milliseconds.
+          auto end = std::chrono::high_resolution_clock::now();
 
-          std::this_thread::sleep_for(20ms);
+          auto time_to_wait = std::chrono::duration<double, std::milli>(period_milliseconds) - (end - start);
+
+
+          // If we've spent more time than we should, don't wait.
+          if (time_to_wait.count() > 0) {
+               std::this_thread::sleep_for(time_to_wait);
+          }
+
+
      }
      return 0;
 }
