@@ -1,19 +1,17 @@
 services:
 
-  opencvtest:
-    build: .
-    image: robo-012-opencvtest
+  opencvexample:
+    build: . 
+    image: cpp-opencv-002-example
     network_mode: host
     ipc: host
     stdin_open: true
     tty: true
-    stop_grace_period: 1s  # SIGKILL after 1s
+    
     volumes:
-      # read only so that the permissions dont change on host unnecessarily.
-      - ${PWD}:/pwd/:ro
-      # X11 forwarding for linux 
+      - ${PWD}/:/pwd
       - $XAUTHORITY:/root/.Xauthority
-    command: /bin/bash -c "python3  /pwd/opencv001.py"
+    command: /bin/bash -c "cd /pwd/ && mkdir -p build && cd build && cmake .. && make && ./example"
     environment:
       - DISPLAY
       - WAYLAND_DISPLAY
