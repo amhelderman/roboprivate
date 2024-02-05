@@ -97,11 +97,8 @@ int main()
 
           imshow(WINDOW_NAME, rotate(blur(frame)));
 
-          // Get time we've spent loading frame in milliseconds.
           auto end = std::chrono::high_resolution_clock::now();
-
           auto time_to_wait = std::chrono::duration<double, std::milli>(period_milliseconds) - (end - start);
-
 
           // If we've spent more time than we should, don't wait.
           if (time_to_wait.count() > 0) {
