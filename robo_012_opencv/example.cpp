@@ -1,6 +1,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+ #include "opencv2/imgproc/imgproc.hpp" // Gaussian Blur, Canny
 #include <iostream>
 #include <stdexcept>
 #include <chrono>
@@ -43,6 +44,21 @@ Mat frameWithCircle() {
     return img;
 }
 
+
+Mat blur(Mat frame) {
+     Mat blurred_frame;
+     GaussianBlur(frame, blurred_frame, Size(15, 15), 0);
+     return blurred_frame;
+}
+
+Mat rotate(Mat frame) {
+     Mat out;
+     int width, height = frame.size().width, frame.size().height;
+     Mat matRotation = getRotationMatrix2D( Point(width, height, (45 - 180), 1 );
+     warpAffine( frame, out, matRotation, frame.size() );
+     return frame;
+}
+
 int main()
 {
      using namespace std::chrono_literals;
@@ -79,7 +95,7 @@ int main()
                break;
           }
 
-          imshow(WINDOW_NAME, frame);
+          imshow(WINDOW_NAME, rotate(blur(frame)));
 
           // Get time we've spent loading frame in milliseconds.
           auto end = std::chrono::high_resolution_clock::now();
