@@ -9,11 +9,14 @@
 
 using namespace cv;
 
-VideoCapture setupVideo() {
-      //open the video file for reading
-     VideoCapture cap("/pwd/sample.webm"); 
+const std::string WINDOW_NAME = "Video";
+const std::string VIDEO_PATH = "/pwd/sample.webm";
 
-     // if not success, exit program
+
+VideoCapture getVideo() {
+
+     VideoCapture cap(VIDEO_PATH); 
+
      if (cap.isOpened() == false)  
      {
           throw std::invalid_argument("Cannot open the video file");
@@ -22,24 +25,11 @@ VideoCapture setupVideo() {
      return cap;
 }
 
-void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+void handleMouseEvent(int event, int x, int y, int flags, void* userdata)
 {
      if  ( event == EVENT_LBUTTONDOWN )
      {
-          std::cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
-     }
-     else if  ( event == EVENT_RBUTTONDOWN )
-     {
-          std::cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
-     }
-     else if  ( event == EVENT_MBUTTONDOWN )
-     {
-          std::cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
-     }
-     else if ( event == EVENT_MOUSEMOVE )
-     {
-          std::cout << "Mouse move over the window - position (" << x << ", " << y << ")" << std::endl;
-
+          std::cout << "Clicked at " << x << "  " << y  << std::endl;
      }
 }
 
@@ -55,12 +45,13 @@ Mat frameWithCircle() {
 
 int main()
 {
+     using namespace std::chrono_literals;
 
-     imshow("Display window", frameWithCircle());
+     imshow(WINDOW_NAME, frameWithCircle());
 
-     setMouseCallback("Display window", CallBackFunc, NULL);
+     setMouseCallback(WINDOW_NAME, handleMouseEvent, NULL);
 
-     VideoCapture cap = setupVideo();
+     VideoCapture cap = getVideo();
 
      double fps = cap.get(CAP_PROP_FPS);
 
@@ -68,15 +59,12 @@ int main()
           throw std::invalid_argument("Cannot get fps");
      }
 
-     using namespace std::chrono_literals;
-
-
      double period_milliseconds = 1000.0 / fps;
 
      std::cout << "fps: " << fps << std::endl;
      std::cout << "period_milliseconds: " << period_milliseconds << std::endl;
 
-     while (!is_interrupted) {
+     while (true) {
           Mat frame;
 
           // Get time now.
@@ -86,13 +74,12 @@ int main()
                std::cout << "End of video" << std::endl;
                break;
           }
-
-          imshow("Display window", frame);
-
-          if (waitKey(10) == 27) {
+          if (waitKey(1) == 27) {
                std::cout << "Esc key is pressed by user. Stopping the video" << std::endl;
                break;
           }
+
+          imshow(WINDOW_NAME, frame);
 
           // Get time we've spent loading frame in milliseconds.
           auto end = std::chrono::high_resolution_clock::now();
