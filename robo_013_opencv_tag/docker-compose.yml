@@ -1,0 +1,19 @@
+services:
+
+  opencvexample:
+    build: . 
+    image: cpp-opencv-002-example
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    stop_grace_period: 1s
+    volumes:
+      - ${PWD}/:/pwd
+      - $XAUTHORITY:/root/.Xauthority
+    command: /bin/bash -c "cd /pwd/ && mkdir -p build && cd build && cmake .. && make && ./example"
+    environment:
+      - DISPLAY
+      - WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR
+      - PULSE_SERVER
