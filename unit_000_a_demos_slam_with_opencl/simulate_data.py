@@ -75,15 +75,18 @@ def simulate_robot_movement(initial_position, speed=1, rate=1, duration=6):
 
 def main():
     initial_position = (2, 2, np.pi/4)  # Starting at (1,1) facing up and right.
+    commands = [1, 1, 1, 1, 1, 1]  # Move forward 6 times
     positions, scans = simulate_robot_movement(initial_position)
     
     environment_map = create_environment()
+    
 
     # Save map scans and control commands to a json file 
     data = {
         "map": environment_map.tolist(),
         "positions": positions,
-        "scans": scans
+        "scans": scans,
+        "commands": commands,
     }
     with open("data.json", "w") as f:
         json.dump(data, f)
