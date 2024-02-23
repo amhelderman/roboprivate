@@ -7,3 +7,6 @@
 [submodule "robo_010_bridge_px4_ros_jmavsim/PX4-Autopilot"]
 	path = robo_010_bridge_px4_ros_jmavsim/PX4-Autopilot
 	url = git@github.com:PX4/PX4-Autopilot.git
+[submodule "robo_011_px4_ros_jmavsim_control/PX4-Autopilot"]
+	path = robo_011_px4_ros_jmavsim_control/PX4-Autopilot
+	url = git@github.com:PX4/PX4-Autopilot.git
