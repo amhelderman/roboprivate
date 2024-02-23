@@ -1,3 +1,9 @@
 [submodule "unit_000_a_demos_slam_with_opencl/external/json"]
 	path = unit_000_a_demos_slam_with_opencl/external/json
 	url = https://github.com/nlohmann/json
+[submodule "robo_008_px4_qgroundcontrol/PX4-Autopilot"]
+	path = robo_008_px4_qgroundcontrol/PX4-Autopilot
+	url = git@github.com:PX4/PX4-Autopilot.git
+[submodule "robo_010_bridge_px4_ros_jmavsim/PX4-Autopilot"]
+	path = robo_010_bridge_px4_ros_jmavsim/PX4-Autopilot
+	url = git@github.com:PX4/PX4-Autopilot.git
