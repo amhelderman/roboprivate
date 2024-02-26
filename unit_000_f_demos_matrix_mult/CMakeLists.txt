@@ -11,8 +11,15 @@ add_executable(matrix_mul_host matrix_mul_host.cpp)
 include_directories(${OpenCL_INCLUDE_DIRS})
 
 # Link against OpenCL libraries
-target_link_libraries(matrix_mul_host ${OpenCL_LIBRARY})
+# target_link_libraries(matrix_mul_host ${OpenCL_LIBRARY})
 
 
-# CL_HPP_TARGET_OPENCL_VERSION
-target_compile_definitions(matrix_mul_host PRIVATE CL_HPP_TARGET_OPENCL_VERSION=120)
+# Set opencl version 
+target_compile_definitions(matrix_mul_host PRIVATE CL_TARGET_OPENCL_VERSION=300)
+
+
+target_link_libraries(matrix_mul_host ${OpenCL_LIBRARIES})
+
+# Copy the kernel file to the build directory
+configure_file(matrix_mul_kernel.cl matrix_mul_kernel.cl COPYONLY)
+

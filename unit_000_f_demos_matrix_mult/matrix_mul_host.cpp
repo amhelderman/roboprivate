@@ -1,6 +1,6 @@
 
-
-#include <CL/cl.hpp>
+#define CL_HPP_TARGET_OPENCL_VERSION 300
+#include <CL/opencl.hpp>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -11,31 +11,56 @@ int main() {
     const int N = 256;
     size_t bytes = N * N * sizeof(float);
 
+    std::cout << "Matrix dimension: " << N << "x" << N << std::endl;
+
     // Generate input matrices (initialization code omitted for brevity)
     std::vector<float> A(N * N, 1.0f); // Example initialization
     std::vector<float> B(N * N, 2.0f); // Example initialization
     std::vector<float> C(N * N, 0.0f);
 
+    std::cout << "Input matrices generated" << std::endl;
+
     // Boilerplate OpenCL initialization code to set up context, queue, etc.
     std::vector<cl::Platform> platforms;
     cl::Platform::get(&platforms);
-    auto platform = platforms.front();
+    if (platforms.empty()) {
+        std::cerr << "No OpenCL platform found" << std::endl;
+        return -1;
+    }
+
+    auto platform = platforms[1];
+
+
+
     std::vector<cl::Device> devices;
     platform.getDevices(CL_DEVICE_TYPE_GPU, &devices);
+
+    if (devices.empty()) {
+        std::cerr << "No OpenCL device found" << std::endl;
+        return -1;
+    }
     auto device = devices.front();
     auto context = cl::Context(device);
     auto queue = cl::CommandQueue(context, device);
 
-    // Load kernel source code
+    std::cout << "OpenCL context initialized" << std::endl;
+
+
+    // Load the OpenCL source code from slam_kernel.cl 
     std::ifstream source_file("matrix_mul_kernel.cl");
-    std::string source_code(std::istreambuf_iterator<char>(source_file),
-                            (std::istreambuf_iterator<char>()));
-    cl::Program::Sources sources(1, std::make_pair(source_code.c_str(), source_code.length() + 1));
+    std::string source_code(std::istreambuf_iterator<char>(source_file), (std::istreambuf_iterator<char>()));
+    // cl::Program::Sources source(1, std::make_pair(source_code.c_str(), source_code.length() + 1));
+    cl::Program::Sources sources;
+    sources.push_back({source_code.c_str(), source_code.length()});
+
+    std::cout << "Kernel source code loaded" << std::endl;
+
+
     cl::Program program(context, sources);
 
     // Build program
-    if (program.build("-cl-std=CL1.2") != CL_SUCCESS) {
-        std::cerr << "OpenCL program build error: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device) << std::endl;
+    if (program.build({device}) != CL_SUCCESS) {
+        std::cerr << "Error building: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device) << std::endl;
         return -1;
     }
 
