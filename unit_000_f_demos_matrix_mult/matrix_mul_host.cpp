@@ -8,15 +8,21 @@
 
 int main() {
     // Matrix dimension (assuming square matrices for simplicity)
-    const int N = 256;
+    const int N = 20;
     size_t bytes = N * N * sizeof(float);
 
     std::cout << "Matrix dimension: " << N << "x" << N << std::endl;
 
-    // Generate input matrices (initialization code omitted for brevity)
-    std::vector<float> A(N * N, 1.0f); // Example initialization
-    std::vector<float> B(N * N, 2.0f); // Example initialization
+    // Generate input matrices 
+    std::vector<float> A(N * N, 0.0f); 
+    std::vector<float> B(N * N, 0.0f);
     std::vector<float> C(N * N, 0.0f);
+
+    // Set them all up to be identity matrices
+    for (int i = 0; i < N; i++) {
+        A[i * N + i] = 1.0f;
+        B[i * N + i] = 1.0f;
+    }
 
     std::cout << "Input matrices generated" << std::endl;
 
@@ -84,7 +90,8 @@ int main() {
     // Read back the result
     queue.enqueueReadBuffer(bufferC, CL_TRUE, 0, bytes, C.data());
 
-    // Use the result (output code omitted for brevity)
+    // Use the result
+    std::cout << "Result: " << C[0] << std::endl;
 
     return 0;
 }
