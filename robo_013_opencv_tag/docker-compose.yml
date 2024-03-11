@@ -11,6 +11,8 @@ services:
     volumes:
       - ${PWD}/:/pwd
       - $XAUTHORITY:/root/.Xauthority
+      - /dev/shm:/dev/shm
+      - /dev/dri:/dev/dri
     command: /bin/bash -c "cd /pwd/ && mkdir -p build && cd build && cmake .. && make && ./example"
     environment:
       - DISPLAY
